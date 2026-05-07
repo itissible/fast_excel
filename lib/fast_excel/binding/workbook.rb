@@ -10,6 +10,15 @@ module Libxlsxwriter
            :use_zip64, :uchar,
            :output_buffer, :pointer,
            :output_buffer_size, :pointer
+
+    def []=(key, value)
+      if key == :tmpdir
+        @tmpdir_ptr = FFI::MemoryPointer.from_string(value)
+        pointer.put_pointer(offset_of(:tmpdir), @tmpdir_ptr)
+      else
+        super
+      end
+    end
   end
 
   # = Fields:

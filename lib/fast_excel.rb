@@ -22,7 +22,7 @@ module FastExcel
 
   DEF_COL_WIDTH = 8.43
 
-  def self.open(filename = nil, constant_memory: false, default_format: nil)
+  def self.open(filename = nil, constant_memory: false, default_format: nil, use_zip64: false, tmpdir: nil)
     tmp_file = false
     if filename
       if File.exist?(filename) && File.size(filename) > 0
@@ -38,6 +38,9 @@ module FastExcel
 
     opt = Libxlsxwriter::WorkbookOptions.new
     opt[:constant_memory] = constant_memory ? 1 : 0
+    opt[:tmpdir] = tmpdir if tmpdir
+    opt[:use_zip64] = use_zip64 ? 1 : 0
+
     workbook = Libxlsxwriter.workbook_new_opt(filename, opt)
 
     result = Libxlsxwriter::Workbook.new(workbook)
